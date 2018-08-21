@@ -1,12 +1,20 @@
 <template>
 	<div class="slider" ref="mySlider">
-		<div class="left-btn" :class="{active:myPosition.isBtn==2}"></div>
+		<div class="left-btn" @touchstart.prevent="btnFun(2)">
+			<img v-if="myPosition.isBtn==2" :src="orange"/>
+			<img v-else :src="white"/>
+		</div>
 		<div class="propo"></div>
 		<div class="propo-bg"></div>
-		<div class="right-btn" :class="{active:myPosition.isBtn==1}"></div>
+		<div class="right-btn" @touchstart.prevent="btnFun(1)">
+			<img v-if="myPosition.isBtn==1" :src="orange"/>
+			<img v-else :src="white"/>
+		</div>
 	</div>
 </template>
 <script type="text/javascript">
+import orange from '@/assets/orange.png'
+import white from '@/assets/white.png'
 	export default {
 		name: 'slider',
 		props:{
@@ -32,11 +40,15 @@
 					isBtn:0,
 					propoWidth:0
 				},
-				myDefault:null
+				myDefault:null,
+				white,
+				orange,
 			}
 		},
 		methods:{
-
+			btnFun(index){
+				this.myPosition.isBtn = index
+			}
 		},
 		mounted(){
 			//滑块
@@ -64,7 +76,13 @@
 					propo.style.width = this.myPosition.propoWidth+'%'
 					propo.style.left = this.myPosition.right+'%'
 					this.valueFun(parseInt(this.myPosition.right),parseInt(this.myPosition.left),parseInt(this.myPosition.propoWidth))
+				}else if(this.myPosition.right==this.myPosition.left){//按钮位置滑到最大值或者最小值
+					this.myPosition.propoWidth = this.myPosition.left - this.myPosition.right
+					propo.style.width = this.myPosition.propoWidth+'%'
+					propo.style.left = this.myPosition.right+'%'
+					this.valueFun(parseInt(this.myPosition.right),parseInt(this.myPosition.left),parseInt(this.myPosition.propoWidth))
 				}
+				
 			}
 
 			this.myDefault = () => {//初始化
@@ -95,7 +113,6 @@
 				}else if(myWidth<0){
 					myWidth=0
 				}
-
 				if(this.myPosition.isBtn == 1){//判断焦点
 					this.myPosition.left = myWidth
 					rightBtn.style.left = myWidth+'%' 
@@ -103,7 +120,6 @@
 					this.myPosition.right = myWidth
 					leftBtn.style.left = myWidth+'%' 
 				}
-				
 				myCount()
 				e.preventDefault()
 
@@ -114,13 +130,13 @@
 				let btnWidth = (leftBtn.offsetWidth/mySlider.offsetWidth)/2*100 //计算按钮宽度
 				this.myPosition.now = (touchX/mySlider.offsetWidth)*100
 				mySliderX = elementLeft(mySlider) //滑动块x坐标
-				if(this.myPosition.now <= this.myPosition.left+btnWidth&&this.myPosition.now >= this.myPosition.left-btnWidth){ //计算区间 获取焦点
-					this.myPosition.isBtn = 1
-				}else if(this.myPosition.now <= this.myPosition.right+btnWidth&&this.myPosition.now >= this.myPosition.right-btnWidth){
-					this.myPosition.isBtn = 2
-				}else{
-					this.myPosition.isBtn = 0
-				}
+				// if(this.myPosition.now <= this.myPosition.left+btnWidth&&this.myPosition.now >= this.myPosition.left-btnWidth){ //计算区间 获取焦点
+				// 	this.myPosition.isBtn = 1
+				// }else if(this.myPosition.now <= this.myPosition.right+btnWidth&&this.myPosition.now >= this.myPosition.right-btnWidth){
+				// 	this.myPosition.isBtn = 2
+				// }else{
+				// 	this.myPosition.isBtn = 0
+				// }
 			})
 
 			this.myDefault()
@@ -142,26 +158,30 @@
 			height: 0.5rem;
 			.left-btn,.right-btn{
 				position: absolute;
-				top: -0.34rem;
+				top: 0.04rem;
 				transform:translate(-50%,0);
-				&:before{
-					content: ""; 
-					display: block;
-					width: 0; 
-					height: 0.4rem;
-					border-left: 0.17rem solid transparent; 
-					border-right: 0.17rem solid transparent; 
-					border-bottom: 0.17rem solid #B6B6B6; 
+				padding: 0 0.3rem 0.3rem 0.3rem;
+				img{
+					width: 0.335rem;
 				}
-				&:after{
-					content: "";
-					display: block;
-				    height: 0.30rem;
-				    width: 0.34rem;
-				    background: #B6B6B6;
-				    border-bottom-left-radius: 0.1rem;
-				    border-bottom-right-radius: 0.1rem;
-				}
+				// &:before{
+				// 	content: ""; 
+				// 	display: block;
+				// 	width: 0; 
+				// 	height: 0.4rem;
+				// 	border-left: 0.17rem solid transparent; 
+				// 	border-right: 0.17rem solid transparent; 
+				// 	border-bottom: 0.17rem solid #B6B6B6; 
+				// }
+				// &:after{
+				// 	content: "";
+				// 	display: block;
+				//     height: 0.30rem;
+				//     width: 0.335rem;
+				//     background: #B6B6B6;
+				//     border-bottom-left-radius: 0.1rem;
+				//     border-bottom-right-radius: 0.1rem;
+				// }
 			}
 			.propo{
 				width: 0%;
