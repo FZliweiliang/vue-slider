@@ -43,6 +43,9 @@ new Vue({
 | ----------- |:---------------| ---------------------------|
 | valueFun    | Return: value  | valueFun(最小值,最大值,合计) |
 
+### screenshot
+<img src="https://github.com/474782977/vue-slider/blob/master/screenshot/1.jpg" width="320px" style="display:inline;">
+
 ## License
 
 [MIT](LICENSE)

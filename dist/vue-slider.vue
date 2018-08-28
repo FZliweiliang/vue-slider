@@ -13,8 +13,8 @@
 	</div>
 </template>
 <script type="text/javascript">
-import orange from '@/assets/orange.png'
-import white from '@/assets/white.png'
+import orange from './assets/orange.png'
+import white from './assets/white.png'
 	export default {
 		name: 'slider',
 		props:{
